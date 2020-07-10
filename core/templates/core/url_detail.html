@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1 class="text-center my-4"><a href="/">GetShourl</a></h1>
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="card card-body">
+                <h2>Total URl Clicks</h2>
+                <p>The total number of clicks that your link has received.</p>
+                <h2>{{ url.total_clicks }}</h2>
+                <p>Our tool will count each click as one hit to the long URL, even if there are multiple clicks from the same person or device.</p>
+                <a href="{% url 'index' %}" class="btn btn-primary">Create Other Shortened URL</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
