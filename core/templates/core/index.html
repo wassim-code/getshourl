@@ -15,7 +15,7 @@
                             <input type="text" name="redirect_url" class="form-control" placeholder="Enter Your Link Here" required>
                         </div>
                         <div class="col-lg-4">
-                            <button class="btn btn-primary" type="submit">Shorten URl</button>
+                            <button class="btn btn-primary mt-2 mt-lg-0" type="submit">Shorten URl</button>
                         </div>
                     </div>
                 </form>
@@ -38,15 +38,15 @@
                 $("#main-wrapper").detach();
                 $("#response-wrapper").removeClass('d-none')
                 $("#response-wrapper").html(`
-                    <div class="card card-body">
+                    <div class="card card-body mb-4">
                         <h2>Your shortened URL</h2>
                         <p>Copy the shortened link and share it in messages, texts, posts, websites and other locations.</p>
                         <div class="form-row">
                             <div class="col-lg-8">
-                                <input type="text" name="result" class="form-control" value="getshourl.herokuapp.com/${response.url}/">
+                                <input id="url-input" type="text" name="result" class="form-control" value="getshourl.herokuapp.com/${response.url}/">
                             </div>
                             <div class="col-lg-4">
-                                <button class="btn btn-primary">Copy URL</button>
+                                <button class="btn btn-primary mt-2 mt-lg-0" onclick="copyToClipboard()">Copy URL</button>
                             </div>
                         </div>
                         <p class="mt-1">Original Url: <a href="${response.original_url}" target="_blank">${response.original_url}</a></p>
@@ -56,5 +56,11 @@
                 `)
             })
         })
+
+        function copyToClipboard() {
+            const text = document.querySelector("#url-input")
+            text.select()
+            document.execCommand('copy')
+        }
     </script>
 {% endblock %}

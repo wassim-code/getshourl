@@ -12,10 +12,10 @@ class IndexView(View):
     
     def post(self, request):
         letters = string.ascii_letters + string.digits
-        if request.POST['redirect_url'][:8] != 'https://':
-            redirect_url = f"https://{request.POST['redirect_url']}"
-        else:
+        if request.POST['redirect_url'][:7] == 'http://' or request.POST['redirect_url'][:8] == 'https://':
             redirect_url = request.POST['redirect_url']
+        else:
+            redirect_url = f"https://{request.POST['redirect_url']}"
         try:
             url = Url.objects.create(
                 url=''.join(r.choice(letters) for i in range(r.randint(5, 8))),
