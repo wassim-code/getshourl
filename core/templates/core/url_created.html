@@ -1,0 +1,58 @@
+{% extends 'base.html' %} {% block content %}
+<h1 class="text-center my-4"><a href="/">GetShourl</a></h1>
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <div class="card card-body mb-4">
+            <h2>Your shortened URL</h2>
+            <p>
+                Copy the shortened link and share it in messages, texts, posts,
+                websites and other locations.
+            </p>
+            <div class="form-row">
+                <div class="col-lg-8">
+                    <input
+                        id="url-input"
+                        type="text"
+                        name="result"
+                        class="form-control"
+                        value="getshourl.herokuapp.com/{{ url.url }}/"
+                    />
+                </div>
+                <div class="col-lg-4">
+                    <button
+                        class="btn btn-primary mt-2 mt-lg-0"
+                        onclick="copyToClipboard()"
+                    >
+                        Copy URL
+                    </button>
+                </div>
+            </div>
+            <p class="mt-1">
+                Original Url:
+                <a href="{{ url.redirect_url }}" target="_blank"
+                    >{{ url.redirect_url }} </a
+                ><br />
+                {% if url.password %}Password: {{ url.password }}{% endif %}
+            </p>
+            <p class="m-0">
+                Track
+                <a href="/{{ url.url }}/total-clicks/" target="_blank"
+                    >the total of clicks</a
+                >
+                in real-time from your shortened URL.
+            </p>
+            <p class="m-0">
+                Create Another <a href="/" target="_blank">Shortened URL</a>.
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %} {% block javascript %}
+<script>
+    function copyToClipboard() {
+        const text = document.querySelector("#url-input");
+        text.select();
+        document.execCommand("copy");
+    }
+</script>
+{% endblock %}

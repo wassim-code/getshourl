@@ -1,66 +1,56 @@
-{% extends 'base.html' %}
-
-{% load static %}
-
-{% block content %}
-    <h1 class="text-center my-4"><a href="/">GetShourl</a></h1>
-    <div class="row justify-content-center">
-        <div class="col-lg-7">
-            <div class="card card-body" id="main-wrapper">
-                <h2 class="text-center mb-3">Shorten Any URL</h2>
-                <form method="POST">
-                    {% csrf_token %}
-                    <div class="form-row">
-                        <div class="col-lg-8">
-                            <input type="text" name="redirect_url" class="form-control" placeholder="Enter Your Link Here" required>
-                        </div>
-                        <div class="col-lg-4">
-                            <button class="btn btn-primary mt-2 mt-lg-0" type="submit">Shorten URl</button>
-                        </div>
+{% extends 'base.html' %} {% load static %} {% block content %}
+<h1 class="text-center my-4"><a href="/">GetShourl</a></h1>
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <div class="card card-body">
+            <h2 class="text-center mb-3">Shorten Any URL</h2>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-row">
+                    <div class="col-lg-8">
+                        <input
+                            type="text"
+                            name="redirect_url"
+                            class="form-control"
+                            placeholder="Enter Your Link Here"
+                            required
+                        />
+                        <input
+                            type="checkbox"
+                            name="with_password"
+                            id="with_password"
+                        />
+                        <label for="with_password">With Password.</label>
                     </div>
-                </form>
-                
-                <p class="text-center mt-2 mb-0">GetShourl is a free tool to shorten a URL or reduce a link. <br>
-                Use our URL Shortener to create a shortened link making it easy to remember.</p>
-            </div>
+                    <div class="col-lg-4">
+                        <button
+                            class="btn btn-primary btn-block mb-2 mb-lg-0"
+                            type="submit"
+                        >
+                            Shorten URl
+                        </button>
+                    </div>
+                </div>
+            </form>
 
-            <div class="d-none" id="response-wrapper"></div>
+            <p class="text-center mb-0">
+                GetShourl is a free tool to shorten a URL or reduce a link.
+                <br />
+                Use our URL Shortener to create a shortened link making it easy
+                to remember.
+            </p>
         </div>
     </div>
-{% endblock %}
-
-{% block javascript %}
-    <script>
-        $("form").submit(e => {
-            e.preventDefault();
-            $("button").attr('disabled', true);
-            $.post('/', $("form").serialize(), response => {
-                $("#main-wrapper").detach();
-                $("#response-wrapper").removeClass('d-none')
-                $("#response-wrapper").html(`
-                    <div class="card card-body mb-4">
-                        <h2>Your shortened URL</h2>
-                        <p>Copy the shortened link and share it in messages, texts, posts, websites and other locations.</p>
-                        <div class="form-row">
-                            <div class="col-lg-8">
-                                <input id="url-input" type="text" name="result" class="form-control" value="getshourl.herokuapp.com/${response.url}/">
-                            </div>
-                            <div class="col-lg-4">
-                                <button class="btn btn-primary mt-2 mt-lg-0" onclick="copyToClipboard()">Copy URL</button>
-                            </div>
-                        </div>
-                        <p class="mt-1">Original Url: <a href="${response.original_url}" target="_blank">${response.original_url}</a></p>
-                        <p class="m-0">Track <a href="/${response.url}/total-clicks/" target="_blank">the total of clicks</a> in real-time from your shortened URL.</p>
-                        <p class="m-0">Create Another <a href="/" target="_blank">Shortened URL</a>.</p>
-                    </div>
-                `)
-            })
-        })
-
-        function copyToClipboard() {
-            const text = document.querySelector("#url-input")
-            text.select()
-            document.execCommand('copy')
-        }
-    </script>
+</div>
+{% endblock %} {% block javascript %}
+<script>
+    $("form").submit((e) => {
+        e.preventDefault();
+        $.post("/", $("form").serialize(), (response) => {
+            document.open();
+            document.write(response);
+            document.close();
+        });
+    });
+</script>
 {% endblock %}

@@ -1,0 +1,77 @@
+{% extends 'base.html' %} {% block content %}
+<h1 class="text-center my-4"><a href="/">GetShourl</a></h1>
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <div class="card card-body mb-4">
+            <h2>Enter Password:</h2>
+            <p>To Access The Website Link.</p>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-row">
+                    <div class="col-lg-8">
+                        <input
+                            type="password"
+                            name="password"
+                            class="form-control"
+                            placeholder="Password"
+                            required
+                        />
+                    </div>
+                    <div class="col-lg-4">
+                        <button class="btn btn-primary mt-2 mt-lg-0">
+                            Submit
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %} {% block javascript %}
+<script>
+    $("form").submit((e) => {
+        e.preventDefault();
+        $.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+                function getCookie(name) {
+                    var cookieValue = null;
+                    if (document.cookie && document.cookie != "") {
+                        var cookies = document.cookie.split(";");
+                        for (var i = 0; i < cookies.length; i++) {
+                            var cookie = jQuery.trim(cookies[i]);
+                            // Does this cookie string begin with the name we want?
+                            if (
+                                cookie.substring(0, name.length + 1) ==
+                                name + "="
+                            ) {
+                                cookieValue = decodeURIComponent(
+                                    cookie.substring(name.length + 1)
+                                );
+                                break;
+                            }
+                        }
+                    }
+                    return cookieValue;
+                }
+                if (
+                    !(
+                        /^http:.*/.test(settings.url) ||
+                        /^https:.*/.test(settings.url)
+                    )
+                ) {
+                    // Only send the token to relative URLs i.e. locally.
+                    xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+                }
+            },
+        });
+        $.post("/{{ url.url }}/", $("form").serialize(), (response) => {
+            if (response.error_msg) {
+                alert(response.error_msg);
+                $("input").val("");
+            } else {
+                location.href = response.red_url;
+            }
+        });
+    });
+</script>
+{% endblock %}
